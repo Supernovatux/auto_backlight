@@ -27,12 +27,12 @@ fn main() {
             let change_new = change_calc(get_limit() as u8);
             if change != change_new {
                 //User has changed brightness
-                change = change_new;
                 if brightness == brightness_dev.get_brightness() {
                     brightness = brightness_dev.get_brightness();
                 } else {
-                    brightness_dev.set_brightness(change);
+                    brightness_dev.set_brightness(-change+change_new);
                 }
+                change = change_new;
             }
         } else if change != 0 {
             brightness_dev.set_brightness(-change);

@@ -1,11 +1,12 @@
 use image::{imageops::FilterType, DynamicImage, GenericImageView};
-use log::debug;
+use log::{debug, info, trace};
 use std::fs;
 
 use crate::cli_parser::get_offset;
 
 pub fn get_value_to_change(lim: u8, brightness: i16) -> i16 {
-    ((-get_offset() as f64 / 255_f64) * brightness as f64 + lim as f64) as i16
+    debug!("Image brightness {}",brightness);
+    ((-2.0 * lim as f64 / 255_f64) * brightness as f64 + lim as f64 -get_offset() as f64) as i16
 }
 
 pub fn get_average_brightness(img: DynamicImage) -> i16 {
@@ -25,13 +26,13 @@ pub fn change_calc(lim: u8) -> i16 {
     let mut ch = 0;
     for i in screens {
         if i.display_info.is_primary {
-            debug!("{:?}", i.display_info);
+            trace!("{:?}", i.display_info);
             let img = i.capture().unwrap();
             fs::write("tmp.png", &img.buffer()).unwrap();
             let img = image::open("./tmp.png").unwrap();
             ch = get_average_brightness(img);
-            debug!("To brightness {}", ch);
             ch = get_value_to_change(lim, ch);
+            info!("Result of ch {}", ch);
             break;
         }
     }
