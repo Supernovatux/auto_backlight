@@ -75,7 +75,7 @@ impl BrightnessDevice {
             "On {} brightness was increased to {}, raw value of {}",
             &self.brightness, value_new, value
         );
-        write(&self.brightness, format!("{}", value_new)).expect("permition denied");
+        write(&self.brightness, format!("{}", value_new)).expect("permission denied");
     }
 }
 impl Default for BrightnessDevices {

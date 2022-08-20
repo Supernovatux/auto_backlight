@@ -18,6 +18,7 @@ Git clone the repo and do a cargo build.
 - Improve performance.
     - Effect of converting to grayscale is unknown
     - [This](https://github.com/Cykooz/fast_image_resize) crate does linear image resize faster.
+    - Convert a `Vec[u8]` buffer of a png image directly to `DynamicImage`. Instead of writing to disk and loading it.
 - Add a system-tray widget
 - Make it cross platform.
 
