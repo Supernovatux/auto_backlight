@@ -18,8 +18,14 @@ pub struct Cli {
     )]
     pub path: String,
     ///Maximum and minimum change to brightness;
-    #[clap(short, long, value_parser, default_value_t = 5)]
+    #[clap(short, long, value_parser,default_value_t = 10, )]
     pub limit: i16,
+    ///Offset to limit
+    /// if limit=10
+    /// offset = 5
+    /// then brightness will vary between -15 to 5;
+    #[clap(short, long, value_parser, default_value_t = 7)]
+    pub offset: i16,
     ///Interval in which brightness values are refreshed
     #[clap(short, long, value_parser, default_value_t = 5)]
     pub refresh: u64,
@@ -49,6 +55,10 @@ pub fn get_limit() -> i16 {
 pub fn get_refresh() -> u64 {
     let arg = init_cli();
     arg.refresh
+}
+pub fn get_offset() -> i16 {
+    let arg = init_cli();
+    arg.offset
 }
 fn get_def_path() -> String {
     fs::create_dir_all("/tmp/auto_backlight/screenshots").unwrap();

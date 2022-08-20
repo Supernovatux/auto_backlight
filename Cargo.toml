@@ -4,9 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [profile.release]
-lto = "fat"
-codegen-units = 1
-#panic = "abort"
+#lto = "fat"
+#codegen-units = 1
+panic = "abort"
 opt-level = 3 
 #overflow-checks = false
 debug = 0
@@ -21,3 +21,4 @@ log = "*"
 simple_logger = "*"
 clap-verbosity-flag = "*"
 glob = "*"
+ksni = "*"
