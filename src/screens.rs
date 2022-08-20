@@ -5,8 +5,8 @@ use std::fs;
 use crate::cli_parser::get_offset;
 
 pub fn get_value_to_change(lim: u8, brightness: i16) -> i16 {
-    debug!("Image brightness {}",brightness);
-    ((-2.0 * lim as f64 / 255_f64) * brightness as f64 + lim as f64 -get_offset() as f64) as i16
+    debug!("Image brightness {}", brightness);
+    ((-2.0 * lim as f64 / 255_f64) * brightness as f64 + lim as f64 - get_offset() as f64) as i16
 }
 
 pub fn get_average_brightness(img: DynamicImage) -> i16 {

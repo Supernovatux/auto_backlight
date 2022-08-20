@@ -30,7 +30,7 @@ fn main() {
                 if brightness == brightness_dev.get_brightness() {
                     brightness = brightness_dev.get_brightness();
                 } else {
-                    brightness_dev.set_brightness(-change+change_new);
+                    brightness_dev.set_brightness(-change + change_new);
                 }
                 change = change_new;
             }

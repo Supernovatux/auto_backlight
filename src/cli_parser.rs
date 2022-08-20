@@ -18,7 +18,7 @@ pub struct Cli {
     )]
     pub path: String,
     ///Maximum and minimum change to brightness;
-    #[clap(short, long, value_parser,default_value_t = 20, )]
+    #[clap(short, long, value_parser, default_value_t = 20)]
     pub limit: i16,
     ///Offset to limit
     /// if limit=10
