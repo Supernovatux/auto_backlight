@@ -1,6 +1,5 @@
 use std::fs;
 
-use cached::proc_macro::cached;
 use clap::Parser;
 use clap_verbosity_flag::{InfoLevel, Verbosity};
 use log::info;
@@ -21,7 +20,7 @@ pub struct Cli {
     ///Maximum and minimum change to brightness;
     #[clap(short, long, value_parser, default_value_t = 5)]
     pub limit: i16,
-    ///Intervel in which brightness values are refreshed
+    ///Interval in which brightness values are refreshed
     #[clap(short, long, value_parser, default_value_t = 5)]
     pub refresh: u64,
 }
@@ -51,13 +50,11 @@ pub fn get_refresh() -> u64 {
     let arg = init_cli();
     arg.refresh
 }
-#[cached]
 fn get_def_path() -> String {
     fs::create_dir_all("/tmp/auto_backlight/screenshots").unwrap();
     info!("Created /tmp/auto_backlight/screenshots");
     String::from("/tmp/auto_backlight/screenshots/")
 }
-#[cached]
 fn init_cli() -> Cli {
     Cli::parse()
 }

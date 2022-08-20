@@ -4,10 +4,9 @@ use auto_backlight::{
     brightness::BrightnessDevices, cli_parser::{get_limit, get_refresh}, init, screens::change_calc,
 };
 use std::time::Duration;
-use tokio::time::sleep;
+use std::thread::sleep;
 
-#[tokio::main]
-async fn main() {
+fn main() {
     init();
     let mut brightness = 0;
     let mut change = 0;
@@ -23,6 +22,6 @@ async fn main() {
                 brightness_dev.set_brightness(change);
             }
         }
-        sleep(Duration::from_secs(get_refresh())).await;
+        sleep(Duration::from_secs(get_refresh()));
     }
 }

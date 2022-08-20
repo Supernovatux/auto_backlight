@@ -15,14 +15,9 @@ strip = true
 
 [dependencies]
 image = "*"
-rayon = "*"
 screenshots="*"
-resize = "*"
-futures = "*"
-tokio = { version = "*", features = ["full"] }
 clap = { version = "*", features = ["derive"] }
 log = "*"
 simple_logger = "*"
 clap-verbosity-flag = "*"
-cached = "*"
 glob = "*"
