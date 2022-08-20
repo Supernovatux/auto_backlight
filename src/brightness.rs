@@ -1,5 +1,5 @@
 use glob::glob;
-use log::info;
+
 use std::fs::{read_to_string, write};
 #[derive(Debug)]
 pub struct BrightnessDevices {
@@ -71,10 +71,6 @@ impl BrightnessDevice {
         } else {
             value + change
         };
-        info!(
-            "On {} brightness was increased to {}, raw value of {}",
-            &self.brightness, value_new, value
-        );
         write(&self.brightness, format!("{}", value_new)).expect("permission denied");
     }
 }
