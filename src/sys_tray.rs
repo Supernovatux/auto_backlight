@@ -1,18 +1,17 @@
 use std::{
+    mem,
     sync::{
         atomic::{AtomicBool, Ordering},
         Arc,
     },
-    thread,
-    time::Duration,
 };
 
 use ksni;
+use tokio::sync::oneshot;
 
-use crate::cli_parser::get_refresh;
-
-struct SysTray {
+pub struct SysTray {
     running: Arc<AtomicBool>,
+    tx: oneshot::Sender<()>,
 }
 
 impl ksni::Tray for SysTray {
@@ -69,10 +68,9 @@ impl ksni::Tray for SysTray {
                 icon_name: "application-exit".into(),
                 activate: Box::new(|this: &mut Self| {
                     this.running.store(false, Ordering::Relaxed);
-                    //Make sure the default brightness is restored
-                    //Must be a better way to do this;
-                    thread::sleep(Duration::from_secs(get_refresh()));
-                    std::process::exit(0)
+                    let (mut tx, _rx) = oneshot::channel();
+                    mem::swap(&mut this.tx, &mut tx);
+                    tx.send(()).unwrap();
                 }),
                 ..Default::default()
             }
@@ -81,12 +79,14 @@ impl ksni::Tray for SysTray {
     }
 }
 
-pub fn start_knsi(status: Arc<AtomicBool>) {
-    let service = ksni::TrayService::new(SysTray { running: status });
+pub fn start_knsi(status: Arc<AtomicBool>, tx: oneshot::Sender<()>) -> ksni::Handle<SysTray> {
+    let service = ksni::TrayService::new(SysTray {
+        running: status,
+        tx,
+    });
+    let ret = service.handle();
     service.spawn();
-    loop {
-        std::thread::park();
-    }
+    ret
 }
 #[cfg(test)]
 mod test {
@@ -99,13 +99,16 @@ mod test {
         time::Duration,
     };
 
+    use tokio::sync::oneshot;
+
     use super::start_knsi;
 
     #[test]
     fn does_it_work() {
+        let (tx, _) = oneshot::channel();
         let new = Arc::new(AtomicBool::new(true));
         let new2 = new.clone();
-        let _handle1 = thread::spawn(move || start_knsi(new));
+        let _handle1 = thread::spawn(move || start_knsi(new, tx));
         loop {
             println!("{}", new2.load(Ordering::Relaxed));
             thread::sleep(Duration::from_secs(2));

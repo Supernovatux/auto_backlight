@@ -22,3 +22,4 @@ simple_logger = "*"
 clap-verbosity-flag = "*"
 glob = "*"
 ksni = "*"
+tokio = { version = "*", features = ["full"]}

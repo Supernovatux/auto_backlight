@@ -5,23 +5,23 @@ use auto_backlight::{
     screens::change_calc,
     sys_tray,
 };
-use std::{
-    sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc,
-    },
-    thread::{self, sleep},
-    time::Duration,
+use log::info;
+use std::sync::{
+    atomic::{AtomicBool, Ordering},
+    Arc,
 };
-
-fn main() {
+use tokio::sync::oneshot;
+#[tokio::main]
+async fn main() {
     init();
+    let (tx, mut rx) = oneshot::channel();
+    let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(get_refresh()));
     let brightnessctl_status = Arc::new(AtomicBool::new(true));
     let status_to_send = brightnessctl_status.clone();
     let mut brightness = 0;
     let mut change = 0;
     let brightness_dev = BrightnessDevices::new();
-    thread::spawn(move || sys_tray::start_knsi(status_to_send));
+    let handle = sys_tray::start_knsi(status_to_send, tx);
     loop {
         if brightnessctl_status.load(Ordering::Relaxed) {
             let change_new = change_calc(get_limit() as u8);
@@ -39,6 +39,10 @@ fn main() {
             brightness_dev.set_brightness(-change);
             change = 0;
         }
-        sleep(Duration::from_secs(get_refresh()));
+        tokio::select! {
+            _ = interval.tick() => info!("Current brightness {}",brightness),
+            _ = &mut rx => break,
+        }
     }
+    handle.shutdown();
 }
