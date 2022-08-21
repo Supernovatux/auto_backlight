@@ -1,4 +1,5 @@
 use glob::glob;
+use log::info;
 
 use std::fs::{read_to_string, write};
 #[derive(Debug)]
@@ -57,7 +58,10 @@ impl BrightnessDevice {
             .unwrap()
     }
     fn get_current_brightness_percent(&self) -> i16 {
-        (self.get_current_brightness() as f64 * self.get_max_brightness() as f64 / 100.0) as i16
+        let ret = (self.get_current_brightness() as f64 * 100.0 / self.get_max_brightness() as f64)
+            as i16;
+        info!("Current brightness is {}", ret);
+        ret
     }
     pub fn increase_brightness(&self, change: i16) {
         let change = (change as f64 * self.get_max_brightness() as f64 / 100.0) as i16;

@@ -1,9 +1,15 @@
-use std::sync::{
-    atomic::{AtomicBool, Ordering},
-    Arc,
+use std::{
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
+    thread,
+    time::Duration,
 };
 
 use ksni;
+
+use crate::cli_parser::get_refresh;
 
 struct SysTray {
     running: Arc<AtomicBool>,
@@ -61,7 +67,13 @@ impl ksni::Tray for SysTray {
             StandardItem {
                 label: "Exit".into(),
                 icon_name: "application-exit".into(),
-                activate: Box::new(|_| std::process::exit(0)),
+                activate: Box::new(|this: &mut Self| {
+                    this.running.store(false, Ordering::Relaxed);
+                    //Make sure the default brightness is restored
+                    //Must be a better way to do this;
+                    thread::sleep(Duration::from_secs(get_refresh()));
+                    std::process::exit(0)
+                }),
                 ..Default::default()
             }
             .into(),
