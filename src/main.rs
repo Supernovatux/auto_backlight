@@ -41,7 +41,9 @@ async fn main() {
         }
         tokio::select! {
             _ = interval.tick() => info!("Current brightness {}",brightness),
-            _ = &mut rx => break,
+            _ = &mut rx => {
+                brightness_dev.set_brightness(-change);
+                break;},
         }
     }
     handle.shutdown();
