@@ -29,20 +29,20 @@ async fn main() {
                 //User has changed brightness
                 if brightness != brightness_dev.get_brightness() + change {
                     brightness = brightness_dev.get_brightness();
-                    brightness_dev.set_brightness(-change + change_new);
+                    brightness_dev.change_brightness(-change + change_new);
                 } else {
-                    brightness_dev.set_brightness(-change + change_new);
+                    brightness_dev.change_brightness(-change + change_new);
                 }
                 change = change_new;
             }
         } else if change != 0 {
-            brightness_dev.set_brightness(-change);
+            brightness_dev.change_brightness(-change);
             change = 0;
         }
         tokio::select! {
             _ = interval.tick() => info!("Current brightness {}",brightness),
             _ = &mut rx => {
-                brightness_dev.set_brightness(-change);
+                brightness_dev.change_brightness(-change);
                 break;},
         }
     }

@@ -1,7 +1,7 @@
 
 # Auto Backlight
 
-Automatically change brightness depending on screen contents. The program takes a screenshot of the primary screen and calculates its average grayscale rgb value and increases/decreases the brightness by a certain value.
+Automatically change brightness depending on screen contents. The program takes a screenshot of the primary screen and calculates its average RGB value and increases/decreases the brightness by a certain value.
 ## Installation
 
 Git clone the repo and do a cargo build.
@@ -16,9 +16,7 @@ Git clone the repo and do a cargo build.
 ## Roadmap
 
 - Improve performance.
-    - Effect of converting to grayscale is unknown
-    - [This](https://github.com/Cykooz/fast_image_resize) crate does linear image resize faster.
-    - Convert a `Vec[u8]` buffer of a png image directly to `DynamicImage`. Instead of writing to disk and loading it.
+    - Use grayscale and average just a single channel
 - Make it cross platform.
 
 ## Related

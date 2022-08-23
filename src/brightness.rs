@@ -1,5 +1,5 @@
 use glob::glob;
-use log::info;
+use log::{error, info};
 
 use std::fs::{read_to_string, write};
 #[derive(Debug)]
@@ -18,7 +18,7 @@ impl BrightnessDevices {
                     };
                     devices.push(new_dev);
                 }
-                Err(e) => println!("{:?}", e),
+                Err(e) => error!("Glob error {:?}", e),
             }
         }
         BrightnessDevices { devices }
@@ -33,7 +33,7 @@ impl BrightnessDevices {
             .sum();
         sum / self.devices.len() as i16
     }
-    pub fn set_brightness(&self, change: i16) {
+    pub fn change_brightness(&self, change: i16) {
         self.devices[0].increase_brightness(change)
     }
 }
@@ -50,14 +50,14 @@ impl BrightnessDevice {
             .parse()
             .unwrap()
     }
-    pub fn get_current_brightness(&self) -> i16 {
+    fn get_current_brightness(&self) -> i16 {
         read_to_string(&self.brightness)
             .unwrap()
             .trim()
             .parse()
             .unwrap()
     }
-    fn get_current_brightness_percent(&self) -> i16 {
+    pub fn get_current_brightness_percent(&self) -> i16 {
         let ret = (self.get_current_brightness() as f64 * 100.0 / self.get_max_brightness() as f64)
             as i16;
         info!("Current brightness is {}", ret);

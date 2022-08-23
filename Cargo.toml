@@ -22,4 +22,5 @@ simple_logger = "*"
 clap-verbosity-flag = "*"
 glob = "*"
 ksni = "*"
+fast_image_resize = "*"
 tokio = { version = "*", features = ["full"]}

@@ -7,5 +7,4 @@ pub fn init() {
     let log_lev = cli_parser::get_verbosity();
     simple_logger::init_with_level(log_lev).unwrap();
     info!("Starting with log_lev:- {:?}", log_lev);
-    std::env::set_current_dir(cli_parser::get_path()).unwrap();
 }
