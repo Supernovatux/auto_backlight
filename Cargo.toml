@@ -4,11 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [profile.release]
-#lto = "fat"
-#codegen-units = 1
+lto = "fat"
+codegen-units = 1
 panic = "abort"
 opt-level = 3 
-#overflow-checks = false
+overflow-checks = false
 debug = 0
 strip = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
