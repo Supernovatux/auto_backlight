@@ -10,11 +10,13 @@ pub struct Cli {
     ///Maximum and minimum change to brightness;
     #[clap(short, long, value_parser, default_value_t = 10)]
     pub limit: i16,
-    ///Offset to limit. Use as --offset=<Value>
-    /// if limit=10
-    /// offset = -5
+    ///Offset to limit.
+    /// #Example
+    /// ```bash
+    /// auto_backlight --offset -5 --limit
+    /// ```
     /// then brightness will vary between -15 to 5;
-    #[clap(long, value_parser, default_value_t = -7)]
+    #[clap(long,short,allow_hyphen_values = true ,value_parser, default_value_t = -7)]
     pub offset: i16,
     ///Interval in which brightness values are refreshed
     #[clap(short, long, value_parser, default_value_t = 5)]
