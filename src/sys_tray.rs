@@ -7,7 +7,7 @@ use std::{
 };
 
 use ksni;
-use tokio::sync::oneshot;
+use futures::channel::oneshot;
 
 pub struct SysTray {
     running: Arc<AtomicBool>,
@@ -99,7 +99,7 @@ mod test {
         time::Duration,
     };
 
-    use tokio::sync::oneshot;
+    use futures::channel::oneshot;
 
     use super::start_knsi;
 
