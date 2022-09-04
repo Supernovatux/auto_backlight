@@ -17,7 +17,7 @@ Git clone the repo and do a cargo build.
 ## Roadmap
 
 - Improve performance.
-    - Use grayscale and average just a single channel
+    - Average `Vec[u8]` directly
 - Make it cross platform.
 
 ## Related
