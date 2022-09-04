@@ -9,12 +9,12 @@ codegen-units = 1
 panic = "abort"
 opt-level = 3 
 overflow-checks = false
-debug = 2
-
+debug = 0
+strip = "symbols"
 
 [dependencies]
-image = "*"
-screenshots="*"
+image = "*" 
+screenshots={git = "https://github.com/Supernovatux/screenshots-rs",branch = "master"}
 clap = { version = "*", features = ["derive"] }
 log = "*"
 simple_logger = "*"

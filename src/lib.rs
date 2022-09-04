@@ -2,7 +2,7 @@ use std::sync::{Arc, atomic::{AtomicBool, Ordering}};
 
 use futures::{channel::oneshot, FutureExt};
 use futures_timer::Delay;
-use log::info;
+use log::{info, debug};
 
 use crate::{cli_parser::{get_refresh, get_limit}, brightness::BrightnessDevices, screens::change_calc};
 pub mod brightness;
@@ -39,9 +39,10 @@ pub async fn init() {
             change = 0;
         }
         futures::select! {
-            _ =  Delay::new(std::time::Duration::from_secs(refresh)).fuse() => info!("Current brightness {}",brightness),
+            _ =  Delay::new(std::time::Duration::from_secs(refresh)).fuse() => debug!("Current brightness {}",brightness),
             _ = &mut rx => {
                 brightness_dev.change_brightness(-change);
+                info!("Got exit signal");
                 break;},
         }
     }
