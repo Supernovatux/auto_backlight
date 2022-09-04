@@ -13,8 +13,8 @@ debug = 2
 
 
 [dependencies]
-image = "*"
-screenshots="*"
+image = "*" 
+screenshots={git = "https://github.com/Supernovatux/screenshots-rs",branch = "master"}
 clap = { version = "*", features = ["derive"] }
 log = "*"
 simple_logger = "*"

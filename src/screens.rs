@@ -44,7 +44,6 @@ pub fn change_calc(lim: u8) -> i16 {
         if i.display_info.is_primary {
             trace!("{:?}", i.display_info);
             let img = i.capture().unwrap();
-            let img = image::load_from_memory(img.buffer()).unwrap();
             ch = get_average_brightness(img);
             ch = get_value_to_change(lim, ch);
             info!("Result of ch {}", ch);
