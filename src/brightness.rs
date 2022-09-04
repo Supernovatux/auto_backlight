@@ -1,5 +1,5 @@
 use glob::glob;
-use log::{error, info};
+use log::{error, info, debug};
 
 use std::fs::{read_to_string, write};
 #[derive(Debug)]
@@ -60,7 +60,7 @@ impl BrightnessDevice {
     pub fn get_current_brightness_percent(&self) -> i16 {
         let ret = (self.get_current_brightness() as f64 * 100.0 / self.get_max_brightness() as f64)
             as i16;
-        info!("Current brightness is {}", ret);
+        debug !("Current brightness is {}", ret);
         ret
     }
     pub fn increase_brightness(&self, change: i16) {
@@ -75,6 +75,7 @@ impl BrightnessDevice {
         } else {
             value + change
         };
+        info!("Brightness changed from {} to {}",value,value_new);
         write(&self.brightness, format!("{}", value_new)).expect("permission denied");
     }
 }

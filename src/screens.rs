@@ -1,6 +1,7 @@
 use fast_image_resize as fr;
-use image::{DynamicImage, GenericImageView};
-use log::{debug, info, trace};
+use image::GenericImageView;
+use log::{debug, trace};
+use screenshots::DisplayInfo;
 use std::num::NonZeroU32;
 
 use crate::cli_parser::get_offset;
@@ -10,13 +11,13 @@ pub fn get_value_to_change(lim: u8, brightness: i16) -> i16 {
     ((-2.0 * lim as f64 / 255_f64) * brightness as f64 + lim as f64 + get_offset() as f64) as i16
 }
 
-pub fn get_average_brightness(img: DynamicImage) -> i16 {
-    let width = NonZeroU32::new(img.width()).unwrap();
-    let height = NonZeroU32::new(img.height()).unwrap();
+pub fn get_average_brightness(img: Vec<u8>,dsp : DisplayInfo) -> i16 {
+    let width = NonZeroU32::new(dsp.width).unwrap();
+    let height = NonZeroU32::new(dsp.height).unwrap();
     let src_image = fr::Image::from_vec_u8(
         width,
         height,
-        img.to_rgba8().into_raw(),
+        img,
         fr::PixelType::U8x4,
     )
     .unwrap();
@@ -29,7 +30,6 @@ pub fn get_average_brightness(img: DynamicImage) -> i16 {
     let new = image::RgbaImage::from_vec(dst_width.get(), dst_height.get(), dst_image.into_vec())
         .unwrap();
     let img = image::DynamicImage::ImageRgba8(new);
-    let img = img.grayscale();
     let idk: Vec<u32> = img
         .pixels()
         .map(|x| (x.2[0] as u32 + x.2[1] as u32 + x.2[2] as u32) / 3)
@@ -43,10 +43,9 @@ pub fn change_calc(lim: u8) -> i16 {
     for i in screens {
         if i.display_info.is_primary {
             trace!("{:?}", i.display_info);
-            let img = i.capture().unwrap();
-            ch = get_average_brightness(img);
+            let img = i.capture_raw().unwrap();
+            ch = get_average_brightness(img,i.display_info);
             ch = get_value_to_change(lim, ch);
-            info!("Result of ch {}", ch);
             break;
         }
     }
