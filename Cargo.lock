@@ -36,7 +36,7 @@ dependencies = [
 
 [[package]]
 name = "auto_backlight"
-version = "0.1.0"
+version = "1.0.1"
 dependencies = [
  "clap 3.2.20",
  "clap-verbosity-flag",
@@ -670,9 +670,9 @@ dependencies = [
 
 [[package]]
 name = "miniz_oxide"
-version = "0.5.3"
+version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f5c75688da582b8ffc1f1799e9db273f32133c49e048f614d22ec3256773ccc"
+checksum = "96590ba8f175222643a85693f33d26e9c8a015f599c216509b1a6894af675d34"
 dependencies = [
  "adler",
 ]
@@ -887,7 +887,7 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 [[package]]
 name = "screenshots"
 version = "0.4.3"
-source = "git+https://github.com/Supernovatux/screenshots-rs?branch=master#78a38348ba14cf88b1d3ef4335ea3f8f72110832"
+source = "git+https://github.com/Supernovatux/screenshots-rs?branch=master#d38c48ab4bde2ef5cc22a7eca75b181c4a243be4"
 dependencies = [
  "dbus",
  "display-info",

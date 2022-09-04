@@ -1,11 +1,13 @@
 use glob::glob;
-use log::{error, info, debug};
+use log::{debug, error, info};
 
 use std::fs::{read_to_string, write};
+
 #[derive(Debug)]
 pub struct BrightnessDevices {
     devices: Vec<BrightnessDevice>,
 }
+
 impl BrightnessDevices {
     pub fn new() -> Self {
         let mut devices = Vec::new();
@@ -37,11 +39,13 @@ impl BrightnessDevices {
         self.devices[0].increase_brightness(change)
     }
 }
+
 #[derive(Debug)]
 pub struct BrightnessDevice {
     pub max_brightness: String,
     pub brightness: String,
 }
+
 impl BrightnessDevice {
     fn get_max_brightness(&self) -> i16 {
         read_to_string(&self.max_brightness)
@@ -60,7 +64,7 @@ impl BrightnessDevice {
     pub fn get_current_brightness_percent(&self) -> i16 {
         let ret = (self.get_current_brightness() as f64 * 100.0 / self.get_max_brightness() as f64)
             as i16;
-        debug !("Current brightness is {}", ret);
+        debug!("Current brightness is {}", ret);
         ret
     }
     pub fn increase_brightness(&self, change: i16) {
@@ -75,10 +79,11 @@ impl BrightnessDevice {
         } else {
             value + change
         };
-        info!("Brightness changed from {} to {}",value,value_new);
+        info!("Brightness changed from {} to {}", value, value_new);
         write(&self.brightness, format!("{}", value_new)).expect("permission denied");
     }
 }
+
 impl Default for BrightnessDevices {
     fn default() -> Self {
         Self::new()

@@ -6,8 +6,8 @@ use std::{
     },
 };
 
-use ksni;
 use futures::channel::oneshot;
+use ksni;
 
 pub struct SysTray {
     running: Arc<AtomicBool>,

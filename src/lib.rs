@@ -1,14 +1,21 @@
-use std::sync::{Arc, atomic::{AtomicBool, Ordering}};
-
 use futures::{channel::oneshot, FutureExt};
 use futures_timer::Delay;
-use log::{info, debug};
+use log::{debug, info};
+use std::sync::{
+    atomic::{AtomicBool, Ordering},
+    Arc,
+};
 
-use crate::{cli_parser::{get_refresh, get_limit}, brightness::BrightnessDevices, screens::change_calc};
+use crate::{
+    brightness::BrightnessDevices,
+    cli_parser::{get_limit, get_refresh},
+    screens::change_calc,
+};
 pub mod brightness;
 pub mod cli_parser;
 pub mod screens;
 pub mod sys_tray;
+
 pub async fn init() {
     let log_lev = cli_parser::get_verbosity();
     simple_logger::init_with_level(log_lev).unwrap();

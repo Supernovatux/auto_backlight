@@ -1,5 +1,3 @@
-use auto_backlight::init;
-
 fn main() {
-    futures::executor::block_on(init());
+    futures::executor::block_on(auto_backlight::init());
 }

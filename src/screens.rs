@@ -11,16 +11,10 @@ pub fn get_value_to_change(lim: u8, brightness: i16) -> i16 {
     ((-2.0 * lim as f64 / 255_f64) * brightness as f64 + lim as f64 + get_offset() as f64) as i16
 }
 
-pub fn get_average_brightness(img: Vec<u8>,dsp : DisplayInfo) -> i16 {
+pub fn get_average_brightness(img: Vec<u8>, dsp: DisplayInfo) -> i16 {
     let width = NonZeroU32::new(dsp.width).unwrap();
     let height = NonZeroU32::new(dsp.height).unwrap();
-    let src_image = fr::Image::from_vec_u8(
-        width,
-        height,
-        img,
-        fr::PixelType::U8x4,
-    )
-    .unwrap();
+    let src_image = fr::Image::from_vec_u8(width, height, img, fr::PixelType::U8x4).unwrap();
     let dst_width = NonZeroU32::new(160).unwrap();
     let dst_height = NonZeroU32::new(100).unwrap();
     let mut dst_image = fr::Image::new(dst_width, dst_height, fr::PixelType::U8x4);
@@ -44,7 +38,7 @@ pub fn change_calc(lim: u8) -> i16 {
         if i.display_info.is_primary {
             trace!("{:?}", i.display_info);
             let img = i.capture_raw().unwrap();
-            ch = get_average_brightness(img,i.display_info);
+            ch = get_average_brightness(img, i.display_info);
             ch = get_value_to_change(lim, ch);
             break;
         }
