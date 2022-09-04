@@ -44,7 +44,6 @@ dependencies = [
  "futures",
  "futures-timer",
  "glob",
- "image",
  "ksni",
  "log",
  "screenshots",

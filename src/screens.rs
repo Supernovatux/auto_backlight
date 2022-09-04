@@ -1,5 +1,4 @@
 use fast_image_resize as fr;
-use image::GenericImageView;
 use log::{debug, trace};
 use screenshots::DisplayInfo;
 use std::num::NonZeroU32;
@@ -21,15 +20,19 @@ pub fn get_average_brightness(img: Vec<u8>, dsp: DisplayInfo) -> i16 {
     let mut dst_view = dst_image.view_mut();
     let mut resizer = fr::Resizer::new(fr::ResizeAlg::Nearest);
     resizer.resize(&src_image.view(), &mut dst_view).unwrap();
-    let new = image::RgbaImage::from_vec(dst_width.get(), dst_height.get(), dst_image.into_vec())
-        .unwrap();
-    let img = image::DynamicImage::ImageRgba8(new);
-    let idk: Vec<u32> = img
-        .pixels()
-        .map(|x| (x.2[0] as u32 + x.2[1] as u32 + x.2[2] as u32) / 3)
-        .collect();
-    let sum: u32 = idk.iter().sum();
-    (sum / idk.len() as u32) as i16
+    let new = dst_image.into_vec();
+    let mut count = 0;
+    let mut sum = 0;
+    let len = new.len() as u64;
+    for i in new {
+        if count == 3 {
+            count = 0;
+            continue;
+        }
+        sum += i as u64;
+        count += 1;
+    }
+    (sum / (len * 3 / 4)) as i16
 }
 pub fn change_calc(lim: u8) -> i16 {
     let screens = screenshots::Screen::all().unwrap();

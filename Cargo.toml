@@ -23,7 +23,6 @@ strip = "symbols"
 depends = ["libxcb","libxrandr","dbus"]
 
 [dependencies]
-image = "*" 
 screenshots={git = "https://github.com/Supernovatux/screenshots-rs",branch = "master"}
 clap = { version = "*", features = ["derive"] }
 log = "*"
