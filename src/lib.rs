@@ -13,12 +13,17 @@ use crate::{
 };
 pub mod brightness;
 pub mod cli_parser;
+pub mod screen_capture;
 pub mod screens;
 pub mod sys_tray;
 
 pub async fn init() {
     let log_lev = cli_parser::get_verbosity();
-    simple_logger::init_with_level(log_lev).unwrap();
+    simple_logger::SimpleLogger::new()
+        .with_level(log_lev.to_level_filter())
+        .without_timestamps()
+        .init()
+        .unwrap();
     let refresh = get_refresh();
     info!("Starting with log_lev:- {:?}", log_lev);
     let (tx, mut rx) = oneshot::channel();

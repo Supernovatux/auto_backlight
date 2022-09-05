@@ -11,11 +11,7 @@ pub struct Cli {
     #[clap(short, long, value_parser, default_value_t = 10)]
     pub limit: i16,
     ///Offset to limit.
-    /// #Example
-    /// ```bash
-    /// auto_backlight --offset -5 --limit
-    /// ```
-    /// then brightness will vary between -15 to 5;
+    /// If offset is 5 and limit is 10 then brightness will change between -15 to 5;
     #[clap(long,short,allow_hyphen_values = true ,value_parser, default_value_t = -7)]
     pub offset: i16,
     ///Interval in which brightness values are refreshed

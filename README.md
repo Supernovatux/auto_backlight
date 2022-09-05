@@ -8,6 +8,7 @@ Automatically change brightness depending on screen contents. The program takes 
 cd /tmp
 wget https://github.com/Supernovatux/auto_backlight/releases/latest/download/PKGBUILD
 makepkg -si
+auto_backlight -h
 ```
 ### Other distros
 Git clone the repo and do a cargo build.
@@ -24,7 +25,8 @@ Git clone the repo and do a cargo build.
 ## Roadmap
 
 - Improve performance.
-    - Average `Vec[u8]` directly
+- Test on wayland
+- Multimonitor support
 - Make it cross platform.
 
 ## Related

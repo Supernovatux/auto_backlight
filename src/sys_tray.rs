@@ -88,30 +88,3 @@ pub fn start_knsi(status: Arc<AtomicBool>, tx: oneshot::Sender<()>) -> ksni::Han
     service.spawn();
     ret
 }
-#[cfg(test)]
-mod test {
-    use std::{
-        sync::{
-            atomic::{AtomicBool, Ordering},
-            Arc,
-        },
-        thread,
-        time::Duration,
-    };
-
-    use futures::channel::oneshot;
-
-    use super::start_knsi;
-
-    #[test]
-    fn does_it_work() {
-        let (tx, _) = oneshot::channel();
-        let new = Arc::new(AtomicBool::new(true));
-        let new2 = new.clone();
-        let _handle1 = thread::spawn(move || start_knsi(new, tx));
-        loop {
-            println!("{}", new2.load(Ordering::Relaxed));
-            thread::sleep(Duration::from_secs(2));
-        }
-    }
-}

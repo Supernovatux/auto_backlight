@@ -1,9 +1,9 @@
+use display_info::DisplayInfo;
 use fast_image_resize as fr;
 use log::{debug, trace};
-use screenshots::DisplayInfo;
 use std::num::NonZeroU32;
 
-use crate::cli_parser::get_offset;
+use crate::{cli_parser::get_offset, screen_capture};
 
 pub fn get_value_to_change(lim: u8, brightness: i16) -> i16 {
     debug!("Image brightness {}", brightness);
@@ -35,7 +35,7 @@ pub fn get_average_brightness(img: Vec<u8>, dsp: DisplayInfo) -> i16 {
     (sum / (len * 3 / 4)) as i16
 }
 pub fn change_calc(lim: u8) -> i16 {
-    let screens = screenshots::Screen::all().unwrap();
+    let screens = screen_capture::Screen::all().unwrap();
     let mut ch = 0;
     for i in screens {
         if i.display_info.is_primary {

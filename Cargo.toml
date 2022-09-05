@@ -23,10 +23,12 @@ strip = "symbols"
 depends = ["libxcb","libxrandr","dbus"]
 
 [dependencies]
-screenshots={git = "https://github.com/Supernovatux/screenshots-rs",branch = "master"}
+display-info = "*"
+dbus="*"
+xcb = {version="*",features=["randr"]}
 clap = { version = "*", features = ["derive"] }
 log = "*"
-simple_logger = "*"
+simple_logger = {version="*",features=["colors"]}
 clap-verbosity-flag = "*"
 glob = "*"
 ksni = "*"

@@ -27,7 +27,7 @@ impl BrightnessDevices {
     }
     pub fn get_brightness(&self) -> i16 {
         //As of now it averages out.
-        //In future we must be able to relate display if with devices
+        //Multi-monitor support is to be addeed 
         let sum: i16 = self
             .devices
             .iter()
