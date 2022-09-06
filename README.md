@@ -8,7 +8,7 @@ Automatically change brightness depending on screen contents. The program takes 
 cd /tmp
 wget https://github.com/Supernovatux/auto_backlight/releases/latest/download/PKGBUILD
 makepkg -si
-auto_backlight -h
+auto-backlight -h
 ```
 ### Other distros
 Git clone the repo and do a cargo build.
@@ -19,7 +19,7 @@ Git clone the repo and do a cargo build.
     cargo build --release
     cargo install --path=./ --root=/home/$USERNAME/.local
     #Make sure ~/.local/bin is in your PATH
-    auto_backlight -h
+    auto-backlight -h
 ```
     
 ## Roadmap
