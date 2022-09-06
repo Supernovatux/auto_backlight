@@ -1,6 +1,6 @@
 [package]
 name = "auto_backlight"
-version = "1.0.1"
+version = "2.0.0"
 edition = "2021"
 authors = ["Supernovatux <thulashitharan.d@gmail.com>"]
 homepage = "https://github.com/Supernovatux/auto_backlight"
@@ -8,7 +8,8 @@ repository = "https://github.com/Supernovatux/auto_backlight"
 description = "A tool to automatically change brightness based on screen contents"
 keywords = ["brightness-control","rust","linux"]
 license = "MIT"
-include = ["LICENSE", "README.md"]
+include = ["LICENSE", "README.md","completions/auto-backlight.fish"]
+build = "build.rs"
 
 [profile.release]
 lto = "fat"
@@ -35,3 +36,12 @@ ksni = "*"
 fast_image_resize = "*"
 futures = "*"
 futures-timer = "*"
+
+[build-dependencies]
+clap = "*"
+clap_complete = "*"
+clap-verbosity-flag = "*"
+log = "*"
+[[bin]]
+name = "auto-backlight"
+path = "src/main.rs"

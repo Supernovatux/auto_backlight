@@ -29,6 +29,10 @@ Git clone the repo and do a cargo build.
 - Multimonitor support
 - Make it cross platform.
 
+## Features
+- System tray
+
+
 ## Related
 
 Here are some related projects
