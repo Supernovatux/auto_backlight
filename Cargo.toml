@@ -10,6 +10,7 @@ keywords = ["brightness-control","rust","linux"]
 license = "MIT"
 include = ["LICENSE", "README.md","completions/auto-backlight.fish"]
 build = "build.rs"
+readme = "README.md"
 
 [profile.release]
 lto = "fat"
@@ -20,8 +21,13 @@ overflow-checks = false
 debug = 0
 strip = "symbols"
 
-[package.metadata]
-depends = ["libxcb","libxrandr","dbus"]
+[package.metadata.deb]
+assets = [
+    ["target/release/auto-backlight","usr/bin","755"],
+    ["completions/auto-backlight.bash","usr/share/bash-completion/completions/auto-backlight.bash","644"],
+    ["completions/auto-backlight.fish","usr/share/fish/vendor_completions.d/auto-backlight.fish","644"],
+    ["completions/_auto-backlight","usr/share/zsh/site-functions/_auto-backlight","644"],
+]
 
 [dependencies]
 display-info = "*"
