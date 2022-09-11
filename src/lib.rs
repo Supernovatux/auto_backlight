@@ -51,7 +51,7 @@ pub async fn init() {
             change = 0;
         }
         futures::select! {
-            _ =  Delay::new(std::time::Duration::from_secs(refresh)).fuse() => debug!("Current brightness {}",brightness),
+            _ =  Delay::new(std::time::Duration::from_millis(refresh)).fuse() => debug!("Current brightness {}",brightness),
             _ = &mut rx => {
                 brightness_dev.change_brightness(-change);
                 info!("Got exit signal");
