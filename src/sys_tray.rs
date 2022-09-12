@@ -1,17 +1,15 @@
 use std::{
-    mem,
     sync::{
         atomic::{AtomicBool, Ordering},
         Arc,
     },
 };
-
-use futures::channel::oneshot;
+use crossbeam_channel::{Sender};
 use ksni;
 
 pub struct SysTray {
     running: Arc<AtomicBool>,
-    tx: oneshot::Sender<()>,
+    tx: crossbeam_channel::Sender<()>,
 }
 
 impl ksni::Tray for SysTray {
@@ -68,9 +66,7 @@ impl ksni::Tray for SysTray {
                 icon_name: "application-exit".into(),
                 activate: Box::new(|this: &mut Self| {
                     this.running.store(false, Ordering::Relaxed);
-                    let (mut tx, _rx) = oneshot::channel();
-                    mem::swap(&mut this.tx, &mut tx);
-                    tx.send(()).unwrap();
+                    this.tx.send(()).unwrap();
                 }),
                 ..Default::default()
             }
@@ -79,7 +75,7 @@ impl ksni::Tray for SysTray {
     }
 }
 
-pub fn start_knsi(status: Arc<AtomicBool>, tx: oneshot::Sender<()>) -> ksni::Handle<SysTray> {
+pub fn start_knsi(status: Arc<AtomicBool>, tx: Sender<()>) -> ksni::Handle<SysTray> {
     let service = ksni::TrayService::new(SysTray {
         running: status,
         tx,

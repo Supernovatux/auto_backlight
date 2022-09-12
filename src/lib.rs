@@ -1,10 +1,9 @@
-use futures::{channel::oneshot, FutureExt};
-use futures_timer::Delay;
+use crossbeam_channel::{bounded, tick, select};
 use log::{debug, info};
-use std::sync::{
+use std::{sync::{
     atomic::{AtomicBool, Ordering},
     Arc,
-};
+}, time::Duration};
 
 use crate::{
     brightness::BrightnessDevices,
@@ -17,22 +16,22 @@ pub mod screen_capture;
 pub mod screens;
 pub mod sys_tray;
 
-pub async fn init() {
+pub fn init() {
     let log_lev = cli_parser::get_verbosity();
     simple_logger::SimpleLogger::new()
         .with_level(log_lev.to_level_filter())
         .without_timestamps()
         .init()
         .unwrap();
-    let refresh = get_refresh();
     info!("Starting with log_lev:- {:?}", log_lev);
-    let (tx, mut rx) = oneshot::channel();
+    let (tx, rx) = bounded(100);
+    let delay = tick(Duration::from_millis(get_refresh()));
     let brightnessctl_status = Arc::new(AtomicBool::new(true));
     let status_to_send = brightnessctl_status.clone();
     let mut brightness = 0;
     let mut change = 0;
     let brightness_dev = BrightnessDevices::new();
-    let handle = sys_tray::start_knsi(status_to_send, tx);
+    let handle = sys_tray::start_knsi(status_to_send, tx.clone());
     loop {
         if brightnessctl_status.load(Ordering::Relaxed) {
             let change_new = change_calc(get_limit() as u8);
@@ -50,9 +49,9 @@ pub async fn init() {
             brightness_dev.change_brightness(-change);
             change = 0;
         }
-        futures::select! {
-            _ =  Delay::new(std::time::Duration::from_millis(refresh)).fuse() => debug!("Current brightness {}",brightness),
-            _ = &mut rx => {
+        select! {
+            recv(delay) -> _ => debug!("Current brightness {}",brightness),
+            recv(rx) -> _ => {
                 brightness_dev.change_brightness(-change);
                 info!("Got exit signal");
                 break;},

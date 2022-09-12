@@ -11,7 +11,7 @@ fn main() {
         eprintln!("Exitting");
         return;
     }
-    futures::executor::block_on(auto_backlight::init());
+    auto_backlight::init();
     if fs::remove_file("/tmp/auto-backlight.lock").is_err() {
         eprintln!("Failed to remove the lockfile");
     }
