@@ -6,10 +6,11 @@ use std::{
 };
 use crossbeam_channel::{Sender};
 use ksni;
+use signal_hook::low_level::siginfo::Origin;
 
 pub struct SysTray {
     running: Arc<AtomicBool>,
-    tx: crossbeam_channel::Sender<()>,
+    tx: crossbeam_channel::Sender<Option<Origin>>,
 }
 
 impl ksni::Tray for SysTray {
@@ -66,7 +67,7 @@ impl ksni::Tray for SysTray {
                 icon_name: "application-exit".into(),
                 activate: Box::new(|this: &mut Self| {
                     this.running.store(false, Ordering::Relaxed);
-                    this.tx.send(()).unwrap();
+                    this.tx.send(None).unwrap();
                 }),
                 ..Default::default()
             }
@@ -75,7 +76,7 @@ impl ksni::Tray for SysTray {
     }
 }
 
-pub fn start_knsi(status: Arc<AtomicBool>, tx: Sender<()>) -> ksni::Handle<SysTray> {
+pub fn start_knsi(status: Arc<AtomicBool>, tx: Sender<Option<Origin>>) -> ksni::Handle<SysTray> {
     let service = ksni::TrayService::new(SysTray {
         running: status,
         tx,

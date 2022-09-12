@@ -8,7 +8,7 @@ fn main() {
     }
     if File::create("/tmp/auto-backlight.lock").is_err() {
         eprintln!("Failed to create lock file.");
-        eprintln!("Exitting");
+        eprintln!("Exiting");
         return;
     }
     auto_backlight::init();
