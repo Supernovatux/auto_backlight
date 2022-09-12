@@ -24,7 +24,7 @@ dependencies = [
 
 [[package]]
 name = "auto_backlight"
-version = "2.0.0"
+version = "3.0.0"
 dependencies = [
  "clap 3.2.20",
  "clap-verbosity-flag",

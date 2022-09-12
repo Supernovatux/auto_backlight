@@ -1,6 +1,5 @@
 /target
 PKGBUILD
 auto-backlight-*.*.*-x86_64.tar.gz
-tar-helper.sh
 *.out*
 completions

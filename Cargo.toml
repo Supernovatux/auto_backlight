@@ -1,6 +1,6 @@
 [package]
 name = "auto_backlight"
-version = "2.0.0"
+version = "3.0.0"
 edition = "2021"
 authors = ["Supernovatux <thulashitharan.d@gmail.com>"]
 homepage = "https://github.com/Supernovatux/auto_backlight"
