@@ -1,3 +1,4 @@
+#![cfg(wayland)]
 use dbus::{self, blocking::Connection};
 
 use std::{

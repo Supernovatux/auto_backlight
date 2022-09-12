@@ -31,7 +31,6 @@ assets = [
 
 [dependencies]
 display-info = "0.3"
-dbus = "0.9.6"
 xcb = {version="1.1",features=["randr"]}
 clap = { version = "3.2", features = ["derive"] }
 log = "0.4"

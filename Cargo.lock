@@ -30,7 +30,6 @@ dependencies = [
  "clap-verbosity-flag",
  "clap_complete",
  "crossbeam-channel",
- "dbus",
  "display-info",
  "fast_image_resize",
  "glob",

@@ -1,4 +1,4 @@
-use std::fs::{File, self};
+use std::fs::{self, File};
 
 fn main() {
     if File::open("/tmp/auto-backlight.lock").is_ok() {

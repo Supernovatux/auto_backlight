@@ -40,7 +40,13 @@ pub fn change_calc(lim: u8) -> i16 {
     for i in screens {
         if i.display_info.is_primary {
             trace!("{:?}", i.display_info);
-            let img = i.capture_raw().unwrap();
+            let img = match i.capture_raw() {
+                Some(img) => img,
+                None => {
+                    log::error!("Unable to capture screenshot!");
+                    continue;
+                }
+            };
             ch = get_average_brightness(img, i.display_info);
             ch = get_value_to_change(lim, ch);
             break;

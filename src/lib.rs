@@ -1,10 +1,18 @@
-use crossbeam_channel::{bounded, tick, select, Sender};
+use crossbeam_channel::{bounded, select, tick, Sender};
 use log::{debug, info};
-use signal_hook::{consts::{TERM_SIGNALS}, iterator::{SignalsInfo,exfiltrator::{WithOrigin}}, low_level::siginfo::Origin};
-use std::{sync::{
-    atomic::{AtomicBool, Ordering},
-    Arc,
-}, time::Duration, thread};
+use signal_hook::{
+    consts::TERM_SIGNALS,
+    iterator::{exfiltrator::WithOrigin, SignalsInfo},
+    low_level::siginfo::Origin,
+};
+use std::{
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
+    thread,
+    time::Duration,
+};
 
 use crate::{
     brightness::BrightnessDevices,
@@ -31,9 +39,11 @@ pub fn init() {
     let status_to_send = brightnessctl_status.clone();
     let mut brightness = 0;
     let mut change = 0;
-    let brightness_dev = BrightnessDevices::new();
+    let mut brightness_dev = BrightnessDevices::new();
     let handle = sys_tray::start_knsi(status_to_send, tx.clone());
-    thread::spawn(|| {sig_handle(tx);});
+    thread::spawn(|| {
+        sig_handle(tx);
+    });
     loop {
         if brightnessctl_status.load(Ordering::Relaxed) {
             let change_new = change_calc(get_limit() as u8);
@@ -63,7 +73,7 @@ pub fn init() {
                     None => info!("Received taskbar exit signal"),
                 }},
                     Err(err) => log::error!("{}",err),
-                }; 
+                };
                 info!("Exiting");
                 break;},
         }
@@ -71,11 +81,11 @@ pub fn init() {
     handle.shutdown();
 }
 
-fn sig_handle(tx:Sender<Option<Origin>>) {
+fn sig_handle(tx: Sender<Option<Origin>>) {
     let sigs = Vec::from(TERM_SIGNALS);
     let mut signals = SignalsInfo::<WithOrigin>::new(&sigs).unwrap();
     for info in &mut signals {
         tx.send(Some(info)).unwrap();
         break;
-    };
+    }
 }

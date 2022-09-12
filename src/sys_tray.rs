@@ -1,12 +1,10 @@
-use std::{
-    sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc,
-    },
-};
-use crossbeam_channel::{Sender};
+use crossbeam_channel::Sender;
 use ksni;
 use signal_hook::low_level::siginfo::Origin;
+use std::sync::{
+    atomic::{AtomicBool, Ordering},
+    Arc,
+};
 
 pub struct SysTray {
     running: Arc<AtomicBool>,

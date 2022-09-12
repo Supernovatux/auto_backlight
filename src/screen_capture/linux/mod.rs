@@ -2,7 +2,7 @@ use std::env::var_os;
 
 use display_info::DisplayInfo;
 
-use self::{wayland::wayland_capture_screen_raw, xorg::xorg_capture_screen_raw};
+use self::xorg::xorg_capture_screen_raw;
 
 mod wayland;
 mod xorg;
@@ -21,7 +21,7 @@ fn wayland_detect() -> bool {
 }
 pub fn capture_screen_raw(display_info: &DisplayInfo) -> Option<Vec<u8>> {
     if wayland_detect() {
-        wayland_capture_screen_raw()
+        panic!("Wayland not yet tested");
     } else {
         xorg_capture_screen_raw(display_info)
     }
