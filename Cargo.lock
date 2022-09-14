@@ -26,7 +26,7 @@ dependencies = [
 name = "auto_backlight"
 version = "3.0.0"
 dependencies = [
- "clap 3.2.20",
+ "clap 3.2.21",
  "clap-verbosity-flag",
  "clap_complete",
  "crossbeam-channel",
@@ -81,9 +81,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "3.2.20"
+version = "3.2.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "23b71c3ce99b7611011217b366d923f1d0a7e07a92bb2dbf1e84508c673ca3bd"
+checksum = "1ed5341b2301a26ab80be5cbdced622e80ed808483c52e45e3310a877d3b37d7"
 dependencies = [
  "atty",
  "bitflags",
@@ -102,7 +102,7 @@ version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0636f9c040082f8e161555a305f8cec1a1c2828b3d981c812b8c39f4ac00c42c"
 dependencies = [
- "clap 3.2.20",
+ "clap 3.2.21",
  "log",
 ]
 
@@ -112,7 +112,7 @@ version = "3.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3f7a2e0a962c45ce25afce14220bc24f9dade0a1787f185cecf96bfba7847cd8"
 dependencies = [
- "clap 3.2.20",
+ "clap 3.2.21",
 ]
 
 [[package]]
