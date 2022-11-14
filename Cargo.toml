@@ -38,7 +38,7 @@ simple_logger = {version="2.3",features=["colors"]}
 clap-verbosity-flag = "1"
 glob = "0.3"
 ksni = "0.2.0"
-fast_image_resize = "1"
+fast_image_resize = "2"
 crossbeam-channel = "0.5.6"
 signal-hook = { version = "0.3.14", features = ["extended-siginfo"] }
 
