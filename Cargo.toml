@@ -45,7 +45,7 @@ signal-hook = { version = "0.3.14", features = ["extended-siginfo"] }
 
 [build-dependencies]
 clap = "3.2"
-clap_complete = "3.2"
+clap_complete = "4.0"
 clap-verbosity-flag = "1"
 log = "0.4"
 [[bin]]
