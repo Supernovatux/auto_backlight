@@ -1,5 +1,7 @@
-/target
+target
 PKGBUILD
-auto-backlight-*.*.*-x86_64.tar.gz
+*.tar.gz
+*.tar.zst
 *.out*
+pkg
 completions

@@ -3,7 +3,8 @@ use clap_verbosity_flag::{InfoLevel, Verbosity};
 
 
 
-#[derive(Parser)]
+#[derive(Parser,Debug)]
+#[command(author, version, about, long_about = None)]
 pub struct Cli {
     ///Verbosity flag
     #[clap(flatten)]
