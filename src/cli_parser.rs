@@ -1,8 +1,9 @@
-use clap::Parser;
+use clap::{Parser};
 use clap_verbosity_flag::{InfoLevel, Verbosity};
 
-#[derive(Parser, Debug, Clone)]
-#[clap(author, version, about)]
+
+
+#[derive(Parser)]
 pub struct Cli {
     ///Verbosity flag
     #[clap(flatten)]
