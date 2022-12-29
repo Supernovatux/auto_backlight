@@ -5,3 +5,4 @@ PKGBUILD
 *.out*
 pkg
 completions
+.vscode/settings.json

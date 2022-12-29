@@ -1,6 +1,6 @@
 use crossbeam_channel::Sender;
 use ksni;
-use signal_hook::low_level::siginfo::Origin;
+
 use std::sync::{
     atomic::{AtomicBool, Ordering},
     Arc,
@@ -8,7 +8,7 @@ use std::sync::{
 
 pub struct SysTray {
     running: Arc<AtomicBool>,
-    tx: crossbeam_channel::Sender<Option<Origin>>,
+    tx: crossbeam_channel::Sender<Option<i32>>,
 }
 
 impl ksni::Tray for SysTray {
@@ -74,7 +74,7 @@ impl ksni::Tray for SysTray {
     }
 }
 
-pub fn start_knsi(status: Arc<AtomicBool>, tx: Sender<Option<Origin>>) -> ksni::Handle<SysTray> {
+pub fn start_knsi(status: Arc<AtomicBool>, tx: Sender<Option<i32>>) -> ksni::Handle<SysTray> {
     let service = ksni::TrayService::new(SysTray {
         running: status,
         tx,

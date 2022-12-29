@@ -92,7 +92,7 @@ impl BrightnessDevice {
             value + change
         };
         info!("Brightness changed from {} to {}", value, value_new);
-        write(&self.brightness, format!("{}", value_new)).expect("permission denied");
+        write(&self.brightness, format!("{value_new}" )).expect("permission denied");
         Ok(())
     }
 }

@@ -1,18 +1,14 @@
-use std::fs::{self, File};
+use auto_backlight::cli_parser;
+use clap::Parser;
+use file_lock::{FileLock, FileOptions};
 
 fn main() {
-    auto_backlight::init();
-    if File::open("/tmp/auto-backlight.lock").is_ok() {
-        eprintln!("Is another instance of the process running?");
-        eprintln!("If not then try deleting /tmp/auto-backlight.lock");
-        return;
-    }
-    if File::create("/tmp/auto-backlight.lock").is_err() {
-        eprintln!("Failed to create lock file.");
-        eprintln!("Exiting");
-        return;
-    }
-    if fs::remove_file("/tmp/auto-backlight.lock").is_err() {
-        eprintln!("Failed to remove the lockfile");
-    }
+    let args = cli_parser::Cli::parse();
+    let options = FileOptions::new().write(true).read(true).create(true);
+    let filelock = match FileLock::lock("/tmp/auto-backlight.lock", false, options) {
+        Ok(lock) => lock,
+        Err(err) => panic!("Error getting write lock: {err}"),
+    };
+    auto_backlight::init(args);
+    filelock.unlock().unwrap()
 }

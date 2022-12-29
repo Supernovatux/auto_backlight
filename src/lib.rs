@@ -1,9 +1,9 @@
+use cli_parser::Cli;
 use crossbeam_channel::{bounded, select, tick, Sender};
 use log::{debug, info};
 use signal_hook::{
     consts::TERM_SIGNALS,
-    iterator::{exfiltrator::WithOrigin, SignalsInfo},
-    low_level::siginfo::Origin,
+    iterator::{exfiltrator::SignalOnly, SignalsInfo},
 };
 use std::{
     sync::{
@@ -14,27 +14,21 @@ use std::{
     time::Duration,
 };
 
-use crate::{
-    brightness::BrightnessDevices,
-    cli_parser::{get_limit, get_refresh},
-    screens::change_calc,
-};
+use crate::{brightness::BrightnessDevices, screens::change_calc};
 pub mod brightness;
 pub mod cli_parser;
 pub mod screen_capture;
 pub mod screens;
 pub mod sys_tray;
 
-pub fn init() {
-    let log_lev = cli_parser::get_verbosity();
+pub fn init(args: Cli) {
     simple_logger::SimpleLogger::new()
-        .with_level(log_lev.to_level_filter())
+        .with_level(args.get_verbosity().to_level_filter())
         .without_timestamps()
         .init()
         .unwrap();
-    info!("Starting with log_lev:- {:?}", log_lev);
     let (tx, rx) = bounded(16);
-    let delay = tick(Duration::from_millis(get_refresh()));
+    let delay = tick(Duration::from_millis(args.get_refresh()));
     let brightnessctl_status = Arc::new(AtomicBool::new(true));
     let status_to_send = brightnessctl_status.clone();
     let mut brightness = 0;
@@ -46,7 +40,7 @@ pub fn init() {
     });
     loop {
         if brightnessctl_status.load(Ordering::Relaxed) {
-            let change_new = change_calc(get_limit() as u8);
+            let change_new = change_calc(args.get_limit(), args.get_offset());
             if change != change_new {
                 //User has changed brightness
                 if brightness != brightness_dev.get_brightness() + change {
@@ -65,27 +59,29 @@ pub fn init() {
             recv(delay) -> _ => debug!("Current brightness {}",brightness),
             recv(rx) -> msg => {
                 brightness_dev.change_brightness(-change);
-                match msg {
-                    Ok(msg) =>{ match msg {
-                    Some(msg) => {
-                        info!("Received exit signal {:?}",msg);
-                    }
-                    None => info!("Received taskbar exit signal"),
-                }},
-                    Err(err) => log::error!("{}",err),
-                };
+                if cfg!(debug_assertions) {
+                    match msg {
+                        Ok(msg) => {
+                            match msg {
+                                Some(msg) => info!("Received exit signal {}",msg),
+                                None => info!("Received taskbar exit signal"),
+                            }
+                        },
+                        Err(err) => log::error!("{err}"),
+                    };
+                }
                 info!("Exiting");
-                break;},
+                break;
+            },
         }
     }
     handle.shutdown();
 }
 
-fn sig_handle(tx: Sender<Option<Origin>>) {
+fn sig_handle(tx: Sender<Option<i32>>) {
     let sigs = Vec::from(TERM_SIGNALS);
-    let mut signals = SignalsInfo::<WithOrigin>::new(&sigs).unwrap();
-    for info in &mut signals {
+    let mut signals = SignalsInfo::<SignalOnly>::new(sigs).unwrap();
+    if let Some(info) = (&mut signals).into_iter().next() {
         tx.send(Some(info)).unwrap();
-        break;
     }
 }
