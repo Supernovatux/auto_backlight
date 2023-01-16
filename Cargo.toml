@@ -47,7 +47,7 @@ signal-hook = "0.3.14"
 [build-dependencies]
 clap = "4.0.32"
 clap_derive = "4.0.21"
-clap_complete = "4.0.7"
+clap_complete = "4.1.0"
 clap-verbosity-flag = "2"
 log = "0.4"
 [[bin]]
