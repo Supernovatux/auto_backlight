@@ -36,7 +36,7 @@ clap = { version = "4.0.32", features = ["derive"] }
 log = "0.4"
 simple_logger = {version="4.0",features=["colors"]}
 clap-verbosity-flag = "2"
-glob = "0.3"
+glob = "0.3.1"
 ksni = "0.2.0"
 file-lock = "2.1.6"
 fast_image_resize = "2"
