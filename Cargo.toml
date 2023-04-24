@@ -31,7 +31,7 @@ assets = [
 
 [dependencies]
 display-info = "0.3"
-xcb = {version="1.1",features=["randr"]}
+xcb = {version="1.2",features=["randr"]}
 clap = { version = "4.0.32", features = ["derive"] }
 log = "0.4"
 simple_logger = {version="4.0",features=["colors"]}
