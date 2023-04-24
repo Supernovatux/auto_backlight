@@ -40,7 +40,7 @@ glob = "0.3.1"
 ksni = "0.2.0"
 file-lock = "2.1.9"
 fast_image_resize = "2.7"
-crossbeam-channel = "0.5.6"
+crossbeam-channel = "0.5.8"
 signal-hook = "0.3.15"
 
 
